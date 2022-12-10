@@ -7,7 +7,7 @@ sed -i "/dep.*INCLUDE_.*=n/d" `find package/ -follow -type f -path '*/luci-app-t
 sed -i "s/option limit_enable '1'/option limit_enable '0'/" `find package/ -follow -type f -path '*/nft-qos/files/nft-qos.config'`
 sed -i "s/option enabled '1'/option enabled '0'/" `find package/ -follow -type f -path '*/vsftpd-alt/files/vsftpd.uci'`
 sed -i "/\/etc\/coremark\.sh/d" `find package/ -follow -type f -path '*/coremark/coremark'`
-sed -i 's/192.168.1.1/192.168.2.1/' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.50.2/' package/base-files/files/bin/config_generate
 sed -i 's/=1/=0/g' package/kernel/linux/files/sysctl-br-netfilter.conf
 
 sed -i '/DEPENDS+/ s/$/ +wsdd2/' `find package/ -follow -type f -path '*/ksmbd-tools/Makefile'`
@@ -54,7 +54,7 @@ if [[ $BRANCH == 'master' ]]; then
 
 
   case $DEVICE in
-    r2s|r2c|r1p|r1p-lts)
+    r2s|r2c|r1p|r1p-lts|r5s)
       # change the voltage value for over-clock stablization
       config_file_cpufreq=`find package/ -follow -type f -path '*/luci-app-cpufreq/root/etc/config/cpufreq'`
       truncate -s-1 $config_file_cpufreq
@@ -80,7 +80,7 @@ case $status_page in
   *htm)
     line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d: -f 1`
     sed -i '/ver\./d' $status_page
-    sed -i $line_number_FV' a <a href="https://github.com/stupidloud/nanopi-openwrt" target="_blank">stupidloud/nanopi-openwrt</a> '$strDate $status_page
+    sed -i $line_number_FV' a <a target="_blank">LoveJY.OpenWrt</a> '$strDate $status_page
     ;;
   *js)
     line_number_FV=`grep -m1 -n 'var fields' $status_page | cut -d: -f1`
